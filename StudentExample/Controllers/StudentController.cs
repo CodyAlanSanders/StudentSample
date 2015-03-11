@@ -27,7 +27,16 @@ namespace StudentExample.Controllers
         // GET: Student/Create
         public ActionResult Create()
         {
-            return View();
+            StudentViewModel vm = new StudentViewModel();
+            List<String> states = new List<String>();
+            states.Add("Alabama"); 
+            states.Add("Indiana");
+            states.Add("Kentucky");
+            states.Add("Texas");
+            states.Add("Utah");
+            vm.States = states;
+
+            return View(vm);
         }
 
         // POST: Student/Create
