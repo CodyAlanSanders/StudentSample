@@ -28,14 +28,7 @@ namespace StudentExample.Controllers
         public ActionResult Create()
         {
             StudentViewModel vm = new StudentViewModel();
-            List<String> states = new List<String>();
-            states.Add("Alabama"); 
-            states.Add("Indiana");
-            states.Add("Kentucky");
-            states.Add("Texas");
-            states.Add("Utah");
-            vm.States = states;
-
+            vm.States=getStates();
             return View(vm);
         }
 
@@ -64,21 +57,34 @@ namespace StudentExample.Controllers
         // GET: Student/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            StudentService service = new StudentService();
+            StudentViewModel vm = new StudentViewModel();
+            vm.States = getStates();
+            vm.Student = service.getStudent(id);
+            return View(vm);
         }
 
         // POST: Student/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit([Bind(Include = "StudentID,Name,Email,Age,Address,City,Zip,State")] Student student)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                try
+                {
+                    StudentService service = new StudentService();
+                    service.updateStudent(student);
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    //failed to update
+                    return View();
+                }
             }
-            catch
+            else
             {
+                //failed to update
                 return View();
             }
         }
@@ -109,6 +115,19 @@ namespace StudentExample.Controllers
             {
                 return View();
             }
+        }
+
+        private List<string> getStates()
+        {
+            List<String> states = new List<String>();
+            states.Add("Alabama");
+            states.Add("California");
+            states.Add("Indiana");
+            states.Add("Kentucky");
+            states.Add("Texas");
+            states.Add("Utah");
+
+            return states;
         }
     }
 }

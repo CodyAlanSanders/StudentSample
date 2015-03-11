@@ -19,6 +19,10 @@ namespace StudentExample.Service
         public List<Student> getStudents() {
             return students;
         }
+        public void updateStudent(Student student) {
+            removeStudent(student);
+            addStudent(student);
+        }
 
         public Student getStudent(int id) {
             Student foundStudent = new Student();
